@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 # Data
-*.csv
+ExtraccionInformacion/trainingSet.csv
+ExtraccionInformacion/control.csv

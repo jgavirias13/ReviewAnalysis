@@ -13,20 +13,37 @@ import pandas as pd
 from langdetect import detect
 import multiprocessing as mp
 import numpy as np
+import os.path
+from os import path
 
+# Funcion que detecta el lenguaje de una review en un dataframe
 def add_language(df):
     df['langreview'] = df['review'].apply(detect)
     return df
 
+# Main
 if __name__ == '__main__':
-    review_dict = pd.read_csv('./trainingSet.csv')
+
+    if(path.exists('./trainingSet.csv')):
+        review_dict = pd.read_csv('./trainingSet.csv')
+    else:
+        review_dict = pd.DataFrame(columns=['name','product','platform','date','rating','upVotes','totVotes','review','langreview'])
 
     # Lectura del archivo de urls
-    resources = pd.read_csv('./urls.csv')
+    if(path.exists('./urls.csv')):
+        resources = pd.read_csv('./urls.csv')
+    else:
+        print('No hay archivo de urls. Cree el archivo urls.csv con las siguientes columnas:')
+        print('     url,status,paginasProcesadas,paginasTotales')
+        exit(1)
+    
     urls = resources.loc[resources['status'] != 'S']
 
     # Lectura del archivo de control
-    control = pd.read_csv('./control.csv')
+    if(path.exists('./control.csv')):
+        control = pd.read_csv('./control.csv')
+    else:
+        control = pd.DataFrame(columns=['url','page','status'])
 
     # Configuracion de request
     headers = {'User-agent': 'Mozilla/5.0'}
