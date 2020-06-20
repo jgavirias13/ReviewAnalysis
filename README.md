@@ -32,3 +32,15 @@ Para la ejecución simplemente se ejecuta:
 ~~~ cmd
 python extraccionMetacritic.py
 ~~~
+
+El archivo de salida **trainingSet.csv** Tiene la siguiente estructura:
+
+- **name:** Nombre de usuario que realizó la review
+- **product:** Nombre del producto al que se realiza la review
+- **platform:** Plataforma del producto
+- **date:** Fecha en la que se realiza la review
+- **rainting:** Calificación o puntaje asigando al producto por parte del usuario
+- **upVotes:** Votos positivos de otros usuarios a la review
+- **totVotes:** Votos totales de otros usuarios a la review
+- **review:** Reseña escrita por el usuario acerca del producto
+- **langReview:** Lenguaje en el que esta escrito la review
