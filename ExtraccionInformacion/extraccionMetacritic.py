@@ -15,10 +15,16 @@ import multiprocessing as mp
 import numpy as np
 import os.path
 from os import path
+from langdetect.detector_factory import init_factory
+from langdetect.lang_detect_exception import LangDetectException
 
 # Funcion que detecta el lenguaje de una review en un dataframe
 def add_language(df):
-    df['langreview'] = df['review'].apply(detect)
+    init_factory()
+    try:
+        df['langreview'] = df['review'].apply(detect)
+    except LangDetectException:
+        df['langreview'] = ""
     return df
 
 # Main
@@ -149,8 +155,8 @@ if __name__ == '__main__':
     print('Descarga terminada')
     print('Detectando idiomas...')
 
-    pendingReviews = review_dict.query('langreview == ""')
-    readyReviews = review_dict.query('langreview != ""')
+    pendingReviews = review_dict.query('langreview == "" | langreview.isnull()', engine='python')
+    readyReviews = review_dict.query('langreview != "" & not langreview.isnull()', engine='python')
 
     # Deteccion de idiomas paralelo
     cores = mp.cpu_count()-1
@@ -159,7 +165,6 @@ if __name__ == '__main__':
     pool = mp.Pool(cores)
     newReviews = pd.concat(pool.map(add_language,split_reviews))
     newReviews = pd.concat([newReviews,readyReviews])
-    #review_dict['langreview'] = review_dict['review'].apply(detect)
 
 
     print('Guardando resultados')
