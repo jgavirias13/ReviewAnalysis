@@ -68,7 +68,7 @@ if __name__ == '__main__':
         procesadas = 0
         resources.loc[resources.url == url, 'paginasTotales'] = numPages
         for page in range(0,numPages):
-            print('Procesando url {} de {}  {:.1%}\r'.format(i,len(urls),(page+1)/numPages),end='')
+            print('Procesando url {} de {}  {:.1%}      \r'.format(i,len(urls),(page+1)/numPages),end='')
             filter1 = control['url'] == url
             filter2 = control['page'] == page
             filter3 = control['status'] == 'S'
@@ -124,7 +124,7 @@ if __name__ == '__main__':
                     else:
                         content = review.find('div', class_='review_body')
                         if(content):
-                            row['review'] = content.text.replace('\n',' ').strip()
+                            row['review'] = content.text.replace('\n',' ').replace('\r','').strip()
                     review_dict.loc[len(review_dict)] = row
                 if(len(control.loc[filter1 & filter2]) > 0):
                     control.loc[filter1 & filter2,'status'] = 'S'
